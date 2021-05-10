@@ -10,6 +10,6 @@ namespace CinemaProjectData.Models
     {
         public int IdBiglietto { get; set; }
         public int Posizione { get; set; }
-        public decimal PrezzoBiglietto { get; set; }
+        public double PrezzoBiglietto { get; set; }
     }
 }

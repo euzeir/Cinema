@@ -10,41 +10,69 @@ namespace CinemaProjectData.Services
     public class InMemoryCinemaData : ICinema, ISalaCinematografica, ISpettatore, IBiglietto, IStatistiche
     {
         List<SalaCinematografica> sale;
-        List<Spettatore> spettatori;
+        List<Spettatore> spettatoriSalaUno;
+        List<Spettatore> spettatoriSalaDue;
         List<Biglietto> biglietti;
+        List<Film> film;
 
         public InMemoryCinemaData()
         {
+            //film
+            film = new List<Film>()
+            {
+                new Film
+                {
+                    IdFilm = 1,
+                    TitoloFilm = "Il Signore degli Anelli",
+                    AutoreFilm = "J. R. R. Tolkien",
+                    ProduttoreFilm = "Peter Jackson",
+                    GenereFilm = "Fantasy",
+                    DurataFilm = 178
+                },
+
+                new Film
+                {
+                    IdFilm = 2,
+                    TitoloFilm = "Guerre Stellari",
+                    AutoreFilm = "George Lucas",
+                    ProduttoreFilm = "Gary Kurtz",
+                    GenereFilm = "Fantascienza",
+                    DurataFilm = 121
+                },
+            };
             //biglietti
             biglietti = new List<Biglietto>()
             {
-                new Biglietto { 
+                new Biglietto 
+                { 
                     IdBiglietto = 1, 
                     Posizione = 23, 
-                    PrezzoBiglietto = Convert.ToDecimal(24.6)
+                    PrezzoBiglietto = Convert.ToDouble(24.6)
                 },
 
-                new Biglietto {
+                new Biglietto 
+                {
                     IdBiglietto = 2,
                     Posizione = 99,
-                    PrezzoBiglietto = Convert.ToDecimal(20.5)
+                    PrezzoBiglietto = Convert.ToDouble(20.5)
                 },
 
-                new Biglietto {
+                new Biglietto 
+                {
                     IdBiglietto = 3,
                     Posizione = 45,
-                    PrezzoBiglietto = Convert.ToDecimal(23.5)
+                    PrezzoBiglietto = Convert.ToDouble(23.5)
                 },
 
                 new Biglietto {
                     IdBiglietto = 4,
                     Posizione = 32,
-                    PrezzoBiglietto = Convert.ToDecimal(21.8)
+                    PrezzoBiglietto = Convert.ToDouble(21.8)
                 },
             };
 
             //spettatori
-            spettatori = new List<Spettatore>()
+            spettatoriSalaUno = new List<Spettatore>()
             {
                 new Spettatore { 
                     IdSpettatore = 1,
@@ -61,8 +89,11 @@ namespace CinemaProjectData.Services
                     CognomeSpettatore = "Verdi",
                     DataNascitaSpettatore = Convert.ToDateTime("21/03/1956"),
                     BigliettoSpettatore = biglietti[1]
-                },
+                }
+            };
 
+            spettatoriSalaDue = new List<Spettatore>()
+            {
                 new Spettatore
                 {
                     IdSpettatore = 3,
@@ -89,33 +120,38 @@ namespace CinemaProjectData.Services
                 {
                     IdSala = 1,
                     MassimoNumeroDiSpettatori = 100,
-                    Spettatori = spettatori.GetRange(0, 2),
-                    FilmInProiezione = "Il Signore degli Anelli"
+                    Spettatori = spettatoriSalaUno,
+                    FilmInProiezione = film[0]
                 },
 
                 new SalaCinematografica
                 {
                     IdSala = 2,
                     MassimoNumeroDiSpettatori = 150,
-                    Spettatori = spettatori.GetRange(2, 2),
-                    FilmInProiezione = "Guerre Stellari"
+                    Spettatori = spettatoriSalaDue,
+                    FilmInProiezione = film[1]
                 },
             };
         }
 
-        public void ApplicaScontoAnziani()
+        public void ApplicaScontoAnziani(Spettatore s)
         {
-            throw new NotImplementedException();
+            ScontoAnziani(s);
         }
 
-        public decimal CalcolareIncassoSala()
+        public double CalcolareIncassoSala(SalaCinematografica s)
         {
-            throw new NotImplementedException();
+            double total = 0;
+            foreach (var spettatore in s.Spettatori)
+            {
+                total += spettatore.BigliettoSpettatore.PrezzoBiglietto;
+            }
+            return total;
         }
 
-        public void CalcolareRiduzioneBambini()
+        public void CalcolareRiduzioneBambini(Spettatore s)
         {
-            throw new NotImplementedException();
+            ScontoBambini(s);
         }
 
         public string FilmConMaggiorNumeroDiSpettatori()
@@ -133,39 +169,83 @@ namespace CinemaProjectData.Services
             throw new NotImplementedException();
         }
 
-        public IEnumerable<SalaCinematografica> IncassoCinema()
+        public double IncassoCinema(List<SalaCinematografica> s)
         {
-            throw new NotImplementedException();
+            double total = 0.0;
+            foreach (var sala in s)
+            {
+                foreach (var spettatore in sala.Spettatori)
+                {
+                    total += spettatore.BigliettoSpettatore.PrezzoBiglietto;
+                }
+            }
+
+            return total;
         }
 
-        public bool Maggiore()
+        public bool Maggiore(Spettatore s)
         {
-            throw new NotImplementedException();
+            var age = (int)Math.Round(((DateTime.Now - s.DataNascitaSpettatore).TotalDays) / 365);
+            return age >= 18 ? true : false;
         }
 
-        public bool Minore()
+        public bool Minore(Spettatore s)
         {
-            throw new NotImplementedException();
+            var age = (int)Math.Round(((DateTime.Now - s.DataNascitaSpettatore).TotalDays) / 365);
+            return age < 18 ? true : false;
         }
 
-        public void PermettereIngressoSala()
+        public void PermettereIngressoSala(SalaCinematografica s, Spettatore sp)
         {
-            throw new NotImplementedException();
+            var age = (int)Math.Round(((DateTime.Now - sp.DataNascitaSpettatore).TotalDays) / 365);
+
+            var numeroSpettatoriAttuali = s.Spettatori.Count;
+            if (s.Spettatori.Count < s.MassimoNumeroDiSpettatori)
+            {
+                numeroSpettatoriAttuali++;
+            }
+            else
+            {
+                throw new Exception("SalaAlCompletto!");
+            }
+
+            if (age < 14)
+            {
+                throw new Exception("FilmVietato");
+            }
         }
 
-        public void ScontoAnziani()
+        public void ScontoAnziani(Spettatore s)
         {
-            throw new NotImplementedException();
+            var age = (int)Math.Round(((DateTime.Now - s.DataNascitaSpettatore).TotalDays) / 365);
+
+            if (age > 70)
+            {
+                s.BigliettoSpettatore.PrezzoBiglietto *= 0.1;
+            }
+            else
+            {
+                s.BigliettoSpettatore.PrezzoBiglietto *= 1.0;
+            }
         }
 
-        public void ScontoBambini()
+        public void ScontoBambini(Spettatore s)
         {
-            throw new NotImplementedException();
+            var age = (int)Math.Round(((DateTime.Now - s.DataNascitaSpettatore).TotalDays) / 365);
+
+            if (age < 5)
+            {
+                s.BigliettoSpettatore.PrezzoBiglietto *= 0.5;
+            }
+            else
+            {
+                s.BigliettoSpettatore.PrezzoBiglietto *= 1.0;
+            }
         }
 
-        public void SvuotareSala()
+        public void SvuotareSala(int id)
         {
-            throw new NotImplementedException();
+            sale.FirstOrDefault(s => s.IdSala == id).Spettatori.Clear();
         }
     }
 }

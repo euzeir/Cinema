@@ -10,7 +10,7 @@ namespace CinemaProjectData.Models
     {
         public int IdSala { get; set; }
         public int MassimoNumeroDiSpettatori { get; set; }
-        public IEnumerable<Spettatore> Spettatori { get; set; }
-        public string FilmInProiezione { get; set; }
+        public List<Spettatore> Spettatori { get; set; }
+        public Film FilmInProiezione { get; set; }
     }
 }

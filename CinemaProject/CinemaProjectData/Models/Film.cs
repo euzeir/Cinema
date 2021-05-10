@@ -13,6 +13,6 @@ namespace CinemaProjectData.Models
         public string AutoreFilm { get; set; }
         public string ProduttoreFilm { get; set; }
         public string GenereFilm { get; set; }
-        public decimal DurataFilm { get; set; }
+        public double DurataFilm { get; set; }
     }
 }

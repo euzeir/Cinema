@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CinemaProjectData.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace CinemaProjectData.Services
 {
     public interface IBiglietto
     {
-        void ApplicaScontoAnziani();
-        void CalcolareRiduzioneBambini();
+        void ApplicaScontoAnziani(Spettatore s);
+        void CalcolareRiduzioneBambini(Spettatore s);
     }
 }

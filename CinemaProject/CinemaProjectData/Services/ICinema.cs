@@ -9,6 +9,6 @@ namespace CinemaProjectData.Services
 {
     public interface ICinema
     {
-        IEnumerable<SalaCinematografica> IncassoCinema();
+        double IncassoCinema(List<SalaCinematografica> s);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CinemaProjectData.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,8 @@ namespace CinemaProjectData.Services
 {
     public interface ISalaCinematografica
     {
-        void SvuotareSala();
-        void PermettereIngressoSala();
-        decimal CalcolareIncassoSala();
+        void SvuotareSala(int idSala);
+        void PermettereIngressoSala(SalaCinematografica s, Spettatore sp);
+        double CalcolareIncassoSala(SalaCinematografica s);
     }
 }

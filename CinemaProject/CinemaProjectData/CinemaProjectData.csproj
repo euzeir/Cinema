@@ -50,8 +50,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IBiglietto.cs" />
     <Compile Include="Services\ICinema.cs" />
+    <Compile Include="Services\InMemoryCinemaData.cs" />
     <Compile Include="Services\ISalaCinematografica.cs" />
     <Compile Include="Services\ISpettatore.cs" />
+    <Compile Include="Services\IStatistiche.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

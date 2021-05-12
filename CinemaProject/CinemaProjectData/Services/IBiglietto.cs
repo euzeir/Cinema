@@ -9,7 +9,7 @@ namespace CinemaProjectData.Services
 {
     public interface IBiglietto
     {
-        void ApplicaScontoAnziani(Spettatore s);
-        void CalcolareRiduzioneBambini(Spettatore s);
+        void ApplicaScontoAnziani(int idSpettatore);
+        void CalcolareRiduzioneBambini(int idSpettatore);
     }
 }

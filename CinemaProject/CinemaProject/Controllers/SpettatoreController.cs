@@ -7,23 +7,15 @@ using System.Web.Mvc;
 
 namespace CinemaProject.Controllers
 {
-    [RoutePrefix("Cinema/Index")]
-    public class CinemaController : Controller
+    [RoutePrefix("Spettatore/Index/")]
+    public class SpettatoreController : Controller
     {
         [HttpGet]
         public ActionResult Index(int id)
         {
             CinemaManagement mng = new CinemaManagement();
-            mng.IncassoCinema();
-            mng.CalcolareIncassoSala(id);
-            return View(mng);
-        }
-
-        [HttpGet]
-        public ActionResult Sconto(int id)
-        {
-            CinemaManagement mng = new CinemaManagement();
-            mng.ScontoAnziani(id);
+            mng.Minore(id);
+            mng.Maggiore(id);
             return View(mng);
         }
     }

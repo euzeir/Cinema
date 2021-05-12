@@ -48,6 +48,7 @@
     <Compile Include="Models\Spettatore.cs" />
     <Compile Include="Models\Statistiche.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CinemaManagement.cs" />
     <Compile Include="Services\IBiglietto.cs" />
     <Compile Include="Services\ICinema.cs" />
     <Compile Include="Services\InMemoryCinemaData.cs" />

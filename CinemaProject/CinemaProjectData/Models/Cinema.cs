@@ -8,6 +8,7 @@ namespace CinemaProjectData.Models
 {
     public class Cinema
     {
+        //cinema
         public int IdCinema { get; set; }
         public List<SalaCinematografica> Sale { get; set; }
     }

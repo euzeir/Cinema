@@ -2,20 +2,48 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CinemaProjectData.Services
 {
-    public class InMemoryCinemaData : ICinema, ISalaCinematografica, ISpettatore, IBiglietto, IStatistiche
+    public class InMemoryCinemaData
     {
-        List<SalaCinematografica> sale;
-        List<Spettatore> spettatoriSalaUno;
-        List<Spettatore> spettatoriSalaDue;
-        List<Biglietto> biglietti;
-        List<Film> film;
+        private Cinema cinema;
+        private List<SalaCinematografica> sale;
+        private List<Spettatore> spettatoriSalaUno;
+        private List<Spettatore> spettatoriSalaDue;
+        private List<Biglietto> biglietti;
+        private List<Film> film;
 
         public InMemoryCinemaData()
+        {
+            CreateData();
+        }
+
+        public Cinema GetCinema()
+        {
+            return cinema;
+        }
+
+        public List<SalaCinematografica> GetSala()
+        {
+            return sale;
+        }
+
+        public List<Spettatore> GetSpettatori()
+        {
+            return spettatoriSalaUno.Concat(spettatoriSalaDue).ToList();
+        }
+
+        public List<Biglietto> GetBiglieti()
+        {
+            return biglietti;
+        }
+
+        public List<Film> GetFilms()
+        {
+            return film;
+        }
+        private Cinema CreateData()
         {
             //film
             film = new List<Film>()
@@ -132,120 +160,11 @@ namespace CinemaProjectData.Services
                     FilmInProiezione = film[1]
                 },
             };
+
+            cinema = new Cinema() { IdCinema = 1, Sale = sale };
+
+            return cinema;
         }
 
-        public void ApplicaScontoAnziani(Spettatore s)
-        {
-            ScontoAnziani(s);
-        }
-
-        public double CalcolareIncassoSala(SalaCinematografica s)
-        {
-            double total = 0;
-            foreach (var spettatore in s.Spettatori)
-            {
-                total += spettatore.BigliettoSpettatore.PrezzoBiglietto;
-            }
-            return total;
-        }
-
-        public void CalcolareRiduzioneBambini(Spettatore s)
-        {
-            ScontoBambini(s);
-        }
-
-        public string FilmConMaggiorNumeroDiSpettatori()
-        {
-            throw new NotImplementedException();
-        }
-
-        public string FilmConMinorNumeroDiSpettatori()
-        {
-            throw new NotImplementedException();
-        }
-
-        public decimal GenerePreferito()
-        {
-            throw new NotImplementedException();
-        }
-
-        public double IncassoCinema(List<SalaCinematografica> s)
-        {
-            double total = 0.0;
-            foreach (var sala in s)
-            {
-                foreach (var spettatore in sala.Spettatori)
-                {
-                    total += spettatore.BigliettoSpettatore.PrezzoBiglietto;
-                }
-            }
-
-            return total;
-        }
-
-        public bool Maggiore(Spettatore s)
-        {
-            var age = (int)Math.Round(((DateTime.Now - s.DataNascitaSpettatore).TotalDays) / 365);
-            return age >= 18 ? true : false;
-        }
-
-        public bool Minore(Spettatore s)
-        {
-            var age = (int)Math.Round(((DateTime.Now - s.DataNascitaSpettatore).TotalDays) / 365);
-            return age < 18 ? true : false;
-        }
-
-        public void PermettereIngressoSala(SalaCinematografica s, Spettatore sp)
-        {
-            var age = (int)Math.Round(((DateTime.Now - sp.DataNascitaSpettatore).TotalDays) / 365);
-
-            var numeroSpettatoriAttuali = s.Spettatori.Count;
-            if (s.Spettatori.Count < s.MassimoNumeroDiSpettatori)
-            {
-                numeroSpettatoriAttuali++;
-            }
-            else
-            {
-                throw new Exception("SalaAlCompletto!");
-            }
-
-            if (age < 14)
-            {
-                throw new Exception("FilmVietato");
-            }
-        }
-
-        public void ScontoAnziani(Spettatore s)
-        {
-            var age = (int)Math.Round(((DateTime.Now - s.DataNascitaSpettatore).TotalDays) / 365);
-
-            if (age > 70)
-            {
-                s.BigliettoSpettatore.PrezzoBiglietto *= 0.1;
-            }
-            else
-            {
-                s.BigliettoSpettatore.PrezzoBiglietto *= 1.0;
-            }
-        }
-
-        public void ScontoBambini(Spettatore s)
-        {
-            var age = (int)Math.Round(((DateTime.Now - s.DataNascitaSpettatore).TotalDays) / 365);
-
-            if (age < 5)
-            {
-                s.BigliettoSpettatore.PrezzoBiglietto *= 0.5;
-            }
-            else
-            {
-                s.BigliettoSpettatore.PrezzoBiglietto *= 1.0;
-            }
-        }
-
-        public void SvuotareSala(int id)
-        {
-            sale.FirstOrDefault(s => s.IdSala == id).Spettatori.Clear();
-        }
     }
 }

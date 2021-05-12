@@ -9,9 +9,9 @@ namespace CinemaProjectData.Services
 {
     public interface ISpettatore
     {
-        bool Minore(Spettatore s);
-        bool Maggiore(Spettatore s);
-        void ScontoAnziani(Spettatore s);
-        void ScontoBambini(Spettatore s);
+        bool Minore(int s);
+        bool Maggiore(int s);
+        void ScontoAnziani(int idSpettatore);
+        void ScontoBambini(int idSpettatore);
     }
 }

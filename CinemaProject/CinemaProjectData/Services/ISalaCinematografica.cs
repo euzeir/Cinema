@@ -10,7 +10,7 @@ namespace CinemaProjectData.Services
     public interface ISalaCinematografica
     {
         void SvuotareSala(int idSala);
-        void PermettereIngressoSala(SalaCinematografica s, Spettatore sp);
-        double CalcolareIncassoSala(SalaCinematografica s);
+        void PermettereIngressoSala(int idSala, int idSpettatore);
+        double CalcolareIncassoSala(int idSala);
     }
 }
